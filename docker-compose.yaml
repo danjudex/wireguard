@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  server:
+    image: ghcr.io/linuxserver/wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    network_mode: host
+    environment:
+      - PEERS=0
+    volumes:
+      - /docker_storage/wireguard:/config:ro
+    restart: unless-stopped
+
+  ui:
+    # build: .
+    image: ngoduykhanh/wireguard-ui
+    cap_add:
+      - NET_ADMIN
+    network_mode: host
+    volumes:
+      - ./db:/app/db
+      - /etc/wireguard:/etc/wireguard
+    depends_on:
+      - server
+    restart: unless-stopped
