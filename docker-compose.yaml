@@ -7,10 +7,8 @@ services:
       - NET_ADMIN
       - SYS_MODULE
     network_mode: host
-    environment:
-      - PEERS=0
     volumes:
-      - /docker_storage/wireguard:/config:ro
+      - ./wireguard:/config:ro
     restart: unless-stopped
 
   ui:
@@ -21,7 +19,5 @@ services:
     network_mode: host
     volumes:
       - ./db:/app/db
-      - /etc/wireguard:/etc/wireguard
-    depends_on:
-      - server
+      - ./wireguard:/etc/wireguard
     restart: unless-stopped
